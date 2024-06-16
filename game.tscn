@@ -1,0 +1,74 @@
+[gd_scene load_steps=6 format=3 uid="uid://bivcje2gywnnr"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_3t0k3"]
+[ext_resource type="PackedScene" uid="uid://bhjdk2k4gtvkp" path="res://world/world.tscn" id="4_8ab8t"]
+[ext_resource type="PackedScene" uid="uid://df3jvd3gaj78m" path="res://character/mob/enemy.tscn" id="6_w6q26"]
+
+[sub_resource type="GDScript" id="GDScript_hrttq"]
+script/source = "extends Label
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+
+func _on_sprite_2d_health_depleted():
+	visible = true
+"
+
+[sub_resource type="GDScript" id="GDScript_lsbvt"]
+script/source = "extends Node2D
+
+var screen_size
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	# Restrict camera in the scene
+
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+"
+
+[node name="Game" type="Node"]
+script = ExtResource("1_3t0k3")
+enemy_scene = ExtResource("6_w6q26")
+enemy_amount = 10
+
+[node name="Button" type="Button" parent="."]
+offset_left = 43.0
+offset_top = 43.0
+offset_right = 197.0
+offset_bottom = 104.0
+text = "Pause"
+
+[node name="Label" type="Label" parent="."]
+visible = false
+offset_left = 506.0
+offset_top = 188.0
+offset_right = 586.0
+offset_bottom = 211.0
+text = "You Failed"
+script = SubResource("GDScript_hrttq")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="World" parent="SubViewportContainer/SubViewport" instance=ExtResource("4_8ab8t")]
+script = SubResource("GDScript_lsbvt")

@@ -1,0 +1,300 @@
+[gd_scene load_steps=21 format=3 uid="uid://dftfnhxmyn5ec"]
+
+[ext_resource type="Texture2D" uid="uid://cjb8ivjvrlgfy" path="res://art/battle/battle_backgroud.png" id="1_e4gt8"]
+[ext_resource type="PackedScene" uid="uid://c5gn22t0h05w4" path="res://art/battle/player.tscn" id="2_ectpx"]
+[ext_resource type="PackedScene" uid="uid://c5srb2kcjkmsm" path="res://art/battle/pig.tscn" id="3_4h6un"]
+[ext_resource type="PackedScene" uid="uid://cn54i2n02x035" path="res://battle/info/info.tscn" id="3_jj45e"]
+[ext_resource type="Script" path="res://battle/UI.gd" id="4_1abmk"]
+[ext_resource type="Script" path="res://battle/player.gd" id="4_bfy1r"]
+[ext_resource type="Script" path="res://math/matrix.gd" id="6_gls57"]
+[ext_resource type="Script" path="res://math/complex.gd" id="6_la5jl"]
+[ext_resource type="Script" path="res://battle/enemy.gd" id="7_140bm"]
+
+[sub_resource type="GDScript" id="GDScript_3iudf"]
+script/source = "extends CanvasLayer
+
+# 先手枚举变量
+enum Offensive{
+	PLAYER,
+	ENEMY
+}
+
+@export var offensive:Offensive # 先手
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	var dict = {\"Attacker\":$player, \"Defencer\":$enemy}
+	
+	var Complex = preload(\"res://math/complex.gd\")
+	var Matrix = preload(\"res://math/matrix.gd\")
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+
+func _on_button_pressed():
+	print(\"Clicked!\")
+	var temp_spell = $player/Info/Spells/Spell
+	var temp_spell1 = $player/Info/Spells/Spell2
+	# 判断施法是否成功
+	if $player/Info.chant(temp_spell):
+		print(\"Spelled!\")
+		var damage = $player/Info.attack(temp_spell)
+		print(\"create damage:\",damage)
+		damage = $enemy/Info.defence(temp_spell1, damage)
+		$action.text = \"您造成了 \" + str(damage) + \"伤害，效果拔群！\" 
+	else:
+		print(\"Spell Fialed\")
+	print($enemy/Info/Attribute)
+	$enemy.update_ui()
+
+
+func _on_test_button_pressed():
+	print(\"Spell Fialed\")
+
+
+func _on_next_pressed():
+	var damage = randi()%5+15
+	$player/Info/Attribute.hp -= damage
+	$player.update_ui()
+"
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eer0c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_docie"]
+bg_color = Color(0, 0.976471, 0.0431373, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dto8e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_10khe"]
+bg_color = Color(0.929412, 0.054902, 0.0313726, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lnmbd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ltffe"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gy8el"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mm3sf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m3s3g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4lgb5"]
+bg_color = Color(0.498156, 0.596989, 0.817426, 1)
+
+[node name="battle_scene" type="CanvasLayer"]
+script = SubResource("GDScript_3iudf")
+
+[node name="Utils" type="Node" parent="."]
+
+[node name="Complex" type="Node" parent="Utils"]
+unique_name_in_owner = true
+script = ExtResource("6_la5jl")
+
+[node name="Matrix" type="Node" parent="Utils"]
+unique_name_in_owner = true
+script = ExtResource("6_gls57")
+
+[node name="BattleBackgroud" type="Sprite2D" parent="."]
+position = Vector2(576, 324.75)
+scale = Vector2(1.05699, 0.999225)
+texture = ExtResource("1_e4gt8")
+metadata/_edit_lock_ = true
+
+[node name="player" type="Node2D" parent="."]
+script = ExtResource("4_bfy1r")
+
+[node name="Node2D" parent="player" instance=ExtResource("2_ectpx")]
+position = Vector2(329, 382)
+
+[node name="Info" parent="player" instance=ExtResource("3_jj45e")]
+
+[node name="UI" type="Control" parent="player"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="info" type="Label" parent="player/UI"]
+layout_mode = 0
+offset_left = 742.0
+offset_top = 369.0
+offset_right = 790.0
+offset_bottom = 392.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "冒险者"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="hptxt" type="Label" parent="player/UI"]
+layout_mode = 0
+offset_left = 1008.0
+offset_top = 430.0
+offset_right = 1051.0
+offset_bottom = 453.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "10/10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="player/UI"]
+layout_mode = 0
+offset_left = 798.0
+offset_top = 413.0
+offset_right = 962.0
+offset_bottom = 425.0
+theme_override_styles/background = SubResource("StyleBoxEmpty_eer0c")
+theme_override_styles/fill = SubResource("StyleBoxFlat_docie")
+value = 100.0
+show_percentage = false
+
+[node name="enemy" type="Node2D" parent="."]
+script = ExtResource("7_140bm")
+
+[node name="Node2D" parent="enemy" instance=ExtResource("3_4h6un")]
+position = Vector2(797, 296)
+
+[node name="Info" parent="enemy" instance=ExtResource("3_jj45e")]
+
+[node name="UI" type="Control" parent="enemy"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="info" type="Label" parent="enemy/UI"]
+layout_mode = 0
+offset_left = 76.0
+offset_top = 31.0
+offset_right = 172.0
+offset_bottom = 66.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "小野猪"
+
+[node name="hptxt" type="Label" parent="enemy/UI"]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 31.0
+offset_right = 414.0
+offset_bottom = 67.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "10/10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="enemy/UI"]
+layout_mode = 0
+offset_left = 135.0
+offset_top = 66.0
+offset_right = 459.0
+offset_bottom = 88.0
+theme_override_styles/background = SubResource("StyleBoxEmpty_dto8e")
+theme_override_styles/fill = SubResource("StyleBoxFlat_10khe")
+value = 100.0
+show_percentage = false
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 670.0
+offset_top = 523.0
+offset_right = 1116.0
+offset_bottom = 619.0
+scale = Vector2(2, 2)
+script = ExtResource("4_1abmk")
+
+[node name="GridContainer" type="GridContainer" parent="UI"]
+layout_mode = 0
+offset_left = 28.5
+offset_right = 251.5
+offset_bottom = 66.0
+theme_override_constants/h_separation = 30
+columns = 3
+
+[node name="Button" type="Button" parent="UI/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lnmbd")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ltffe")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_gy8el")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_mm3sf")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m3s3g")
+text = "攻击"
+
+[node name="Button2" type="Button" parent="UI/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lnmbd")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ltffe")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_gy8el")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_mm3sf")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m3s3g")
+text = "防御"
+
+[node name="Button3" type="Button" parent="UI/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lnmbd")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ltffe")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_gy8el")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_mm3sf")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m3s3g")
+text = "背包"
+
+[node name="Button4" type="Button" parent="UI/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lnmbd")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ltffe")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_gy8el")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_mm3sf")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m3s3g")
+text = "戳刺"
+
+[node name="Button5" type="Button" parent="UI/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lnmbd")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ltffe")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_gy8el")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_mm3sf")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m3s3g")
+text = "终结"
+
+[node name="Button6" type="Button" parent="UI/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lnmbd")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ltffe")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_gy8el")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_mm3sf")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m3s3g")
+text = "逃跑"
+
+[node name="next" type="Button" parent="UI"]
+layout_mode = 0
+offset_left = -51.5
+offset_right = -11.5
+offset_bottom = 52.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_4lgb5")
+text = "下一
+回合"
+
+[node name="action" type="Label" parent="."]
+offset_left = 55.0
+offset_top = 532.0
+offset_right = 552.0
+offset_bottom = 607.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "野生的小野猪出现了！"
+
+[connection signal="damage_created" from="player" to="enemy" method="_on_player_damage_created"]
+[connection signal="created_damage" from="enemy" to="player" method="_on_enemy_created_damage"]
+[connection signal="pressed" from="UI/GridContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="UI/next" to="." method="_on_next_pressed"]

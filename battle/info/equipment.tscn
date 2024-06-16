@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbc0aqlq55oug"]
+
+[ext_resource type="Script" path="res://battle/info/equipment.gd" id="1_apscx"]
+
+[node name="Equipment" type="Node"]
+script = ExtResource("1_apscx")

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://cnhntimovge7n"]
+
+[ext_resource type="Script" path="res://utils/CollisionRangeDisplayer.gd" id="1_nu4i2"]
+
+[node name="CollisionRangeDisplayer" type="ColorRect"]
+offset_left = -11.5
+offset_top = -6.5
+offset_right = 12.5
+offset_bottom = 7.5
+color = Color(0, 0, 1, 0.196078)
+script = ExtResource("1_nu4i2")

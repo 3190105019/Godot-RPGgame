@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Complex" load_steps=2 format=3 uid="uid://bf0873um3mub0"]
+
+[ext_resource type="Script" path="res://math/complex.gd" id="1_81k8c"]
+
+[resource]
+script = ExtResource("1_81k8c")
+real = 0.0
+imag = 0.0

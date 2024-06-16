@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://cn54i2n02x035"]
+
+[ext_resource type="Script" path="res://battle/info/info.gd" id="1_ygwom"]
+[ext_resource type="PackedScene" uid="uid://cexv0gtv6ojmm" path="res://battle/info/attribute.tscn" id="2_4s1c2"]
+[ext_resource type="PackedScene" uid="uid://cbc0aqlq55oug" path="res://battle/info/equipment.tscn" id="3_e4w0c"]
+[ext_resource type="PackedScene" uid="uid://uup1e53nxop5" path="res://battle/info/spell.tscn" id="4_80src"]
+
+[node name="Info" type="Node"]
+script = ExtResource("1_ygwom")
+
+[node name="AttributeLimit" parent="." instance=ExtResource("2_4s1c2")]
+hp = Vector2(300, 0)
+sp = Vector2(80, 0)
+atk = Vector2(50, 0)
+def = Vector2(25, 0)
+
+[node name="Attribute" parent="." instance=ExtResource("2_4s1c2")]
+
+[node name="Wand" parent="." instance=ExtResource("3_e4w0c")]
+
+[node name="Sheild" parent="." instance=ExtResource("3_e4w0c")]
+
+[node name="Spells" type="Node" parent="."]
+
+[node name="Spell" parent="Spells" instance=ExtResource("4_80src")]
+spell_name = "attack"
+
+[node name="Spell2" parent="Spells" instance=ExtResource("4_80src")]
+spell_name = "defence"
+speicies = 1

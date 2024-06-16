@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://uup1e53nxop5"]
+
+[ext_resource type="Script" path="res://battle/info/spell.gd" id="1_ankry"]
+[ext_resource type="PackedScene" uid="uid://cexv0gtv6ojmm" path="res://battle/info/attribute.tscn" id="2_vgjkp"]
+
+[node name="Spell" type="Node"]
+script = ExtResource("1_ankry")
+
+[node name="AttributeCost" parent="." instance=ExtResource("2_vgjkp")]
+sp = Vector2(5, 0)

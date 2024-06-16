@@ -1,0 +1,59 @@
+[gd_scene load_steps=11 format=3 uid="uid://csh2bpyoegwpb"]
+
+[ext_resource type="Script" path="res://character/npc/npc.gd" id="1_dalac"]
+[ext_resource type="Texture2D" uid="uid://djy5kxv6x2pvy" path="res://art/npc/atai-archer-idle-(1).png" id="1_qq3wx"]
+[ext_resource type="Texture2D" uid="uid://defbb0v2h4rc0" path="res://art/npc/atai-archer-idle-(2).png" id="2_ip2d5"]
+[ext_resource type="Texture2D" uid="uid://v63qnf32vg4t" path="res://art/npc/atai-archer-talk-(1).png" id="3_6tgdx"]
+[ext_resource type="Texture2D" uid="uid://b8y00sxh5g7rs" path="res://art/npc/atai-archer-talk-(2).png" id="4_5cwca"]
+[ext_resource type="PackedScene" uid="uid://dwg28ycv7a8df" path="res://utils/detect_region.tscn" id="6_dkwom"]
+[ext_resource type="Script" path="res://utils/detect_region.gd" id="7_ei7mr"]
+[ext_resource type="PackedScene" uid="uid://cid4iajexfsg2" path="res://dialogue/dialogue_player/dialogue_player.tscn" id="8_sxajr"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q3f1w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_qq3wx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ip2d5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 2.5
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_6tgdx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_5cwca")
+}],
+"loop": true,
+"name": &"talk",
+"speed": 3.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5i8qi"]
+size = Vector2(14, 29)
+
+[node name="Npc" type="StaticBody2D"]
+script = ExtResource("1_dalac")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_q3f1w")
+animation = &"talk"
+frame_progress = 0.175651
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(3, 2)
+shape = SubResource("RectangleShape2D_5i8qi")
+
+[node name="DetectRegion" parent="." instance=ExtResource("6_dkwom")]
+script = ExtResource("7_ei7mr")
+
+[node name="DialoguePlayer" parent="." instance=ExtResource("8_sxajr")]
+dialogue_file = "res://dialogue/dialogue_data/text.json"
+
+[connection signal="body_entered" from="DetectRegion" to="." method="_on_detect_region_body_entered"]
+[connection signal="body_exited" from="DetectRegion" to="." method="_on_detect_region_body_exited"]

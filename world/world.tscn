@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhjdk2k4gtvkp"]
+
+[ext_resource type="PackedScene" uid="uid://cmnb4yb8tksk1" path="res://character/player/player.tscn" id="1_iufmn"]
+[ext_resource type="PackedScene" uid="uid://kldr7c4dieb" path="res://world/background/mountain.tscn" id="2_un8eb"]
+[ext_resource type="PackedScene" uid="uid://csh2bpyoegwpb" path="res://character/npc/npc.tscn" id="3_uhmti"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_skyqd"]
+
+[node name="World" type="Node2D"]
+
+[node name="WorldBoundary" type="StaticBody2D" parent="."]
+
+[node name="UpperBoundary" type="CollisionShape2D" parent="WorldBoundary"]
+position = Vector2(520, 0)
+rotation = -3.14159
+shape = SubResource("WorldBoundaryShape2D_skyqd")
+debug_color = Color(0, 0.6, 0.701961, 1)
+
+[node name="BottomBoundary" type="CollisionShape2D" parent="WorldBoundary"]
+position = Vector2(528, 648)
+shape = SubResource("WorldBoundaryShape2D_skyqd")
+debug_color = Color(0, 0.6, 0.701961, 1)
+
+[node name="LeftBoundary" type="CollisionShape2D" parent="WorldBoundary"]
+position = Vector2(0, 283)
+rotation = 1.5708
+shape = SubResource("WorldBoundaryShape2D_skyqd")
+debug_color = Color(0, 0.6, 0.701961, 1)
+
+[node name="RightBoundary" type="CollisionShape2D" parent="WorldBoundary"]
+position = Vector2(1152, 283)
+rotation = -1.5708
+shape = SubResource("WorldBoundaryShape2D_skyqd")
+debug_color = Color(0, 0.6, 0.701961, 1)
+
+[node name="Background" parent="." instance=ExtResource("2_un8eb")]
+
+[node name="Mountain" parent="." instance=ExtResource("2_un8eb")]
+position = Vector2(8, -8)
+
+[node name="Player" parent="." instance=ExtResource("1_iufmn")]
+unique_name_in_owner = true
+position = Vector2(520, 256)
+
+[node name="Npc" parent="." instance=ExtResource("3_uhmti")]
+position = Vector2(648, 312)

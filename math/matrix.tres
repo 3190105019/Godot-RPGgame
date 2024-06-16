@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="Matrix2D" load_steps=2 format=3 uid="uid://dm32g5twajaih"]
+
+[ext_resource type="Script" path="res://math/matrix.gd" id="1_qvfcp"]
+
+[resource]
+script = ExtResource("1_qvfcp")

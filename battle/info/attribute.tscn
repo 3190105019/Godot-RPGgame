@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cexv0gtv6ojmm"]
+
+[ext_resource type="Script" path="res://battle/info/attribute.gd" id="1_1onux"]
+
+[node name="Attribute" type="Node"]
+script = ExtResource("1_1onux")
